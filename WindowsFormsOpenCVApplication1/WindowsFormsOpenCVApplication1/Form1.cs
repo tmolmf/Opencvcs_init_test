@@ -83,25 +83,25 @@ namespace WindowsFormsOpenCVApplication1
                 // Frame image buffer
 
                 // When the movie playback reaches end, Mat.data becomes NULL.
-                while (true)
-                {
-                    try
-                    {
-                        Console.WriteLine("READ");
-                        cap.Read(frame); // same as cvQueryFrame
+                //while (true)
+                //{
+                //    try
+                //    {
+                //        Console.WriteLine("READ");
+                //        cap.Read(frame); // same as cvQueryFrame
 
-                        Mat dst = new Mat();
-                        //Cv2.Canny(frame, dst, 10, 100);
+                //        Mat dst = new Mat();
+                //        //Cv2.Canny(frame, dst, 10, 100);
 
-                        window.ShowImage(frame);
-                        //window2.ShowImage(dst);
-                        Cv2.WaitKey();
-                    }
-                    catch (Exception extdf)
-                    {
-                        Console.WriteLine(extdf.ToString());
-                    }
-                }
+                //        window.ShowImage(frame);
+                //        //window2.ShowImage(dst);
+                //        Cv2.WaitKey();
+                //    }
+                //    catch (Exception extdf)
+                //    {
+                //        Console.WriteLine(extdf.ToString());
+                //    }
+                //}
                 //while (!cap.IsOpened());
             }
             #endregion
@@ -109,18 +109,18 @@ namespace WindowsFormsOpenCVApplication1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    Console.WriteLine("READ");
-            //    cap.Read(frame); // same as cvQueryFrame
-
-            //    window.ShowImage(frame);
-            //    Cv2.WaitKey();
-            //}
-            //catch (Exception extdf)
-            //{
-            //    Console.WriteLine(extdf.ToString());
-            //}
+            try
+            {
+                Console.WriteLine("READ");
+                cap.Read(frame); // same as cvQueryFrame
+                
+                window.ShowImage(frame);
+                Cv2.WaitKey(10);
+            }
+            catch (Exception extdf)
+            {
+                Console.WriteLine(extdf.ToString());
+            }
         }
     }
 }
