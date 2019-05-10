@@ -15,8 +15,8 @@ namespace WindowsFormsOpenCVApplication3
     {
         VideoCapture cap;
         Mat frame = new Mat();
-        Mat insert_image_origin = new Mat("Bitmap1.bmp");
-        Mat insert_image_origin_gray = new Mat("Bitmap1.bmp", ImreadModes.Grayscale);
+        Mat insert_image_origin = new Mat("smile.png");
+        Mat insert_image_origin_gray = new Mat("smile.png", ImreadModes.Grayscale);
         Mat insert_image;
         Mat insert_image_gray;
         Mat imageROI;
@@ -34,11 +34,9 @@ namespace WindowsFormsOpenCVApplication3
         {
             try
             {
-                 frame = new Mat();
-                 insert_image_origin = new Mat("Bitmap1.bmp");
-                 insert_image_origin_gray = new Mat("Bitmap1.bmp", ImreadModes.Grayscale);
-                 convertedframe = new Mat();
                 cap = VideoCapture.FromCamera(CaptureDevice.Any);
+                //cap = VideoCapture.FromFile("D:\\Downloads\\프리스틴.mp4");
+                
                 cap.Open(0);
                 cap.Read(frame);
                 facecascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
@@ -61,30 +59,41 @@ namespace WindowsFormsOpenCVApplication3
                 cap.Read(frame);
 
                 #region facedetect
-                rects = facecascade.DetectMultiScale(frame);
+                rects = facecascade.DetectMultiScale(frame, 1.2);
                 //facecascade.DetectMultiScale(frame);
                 if (rects.Length > 0)
                 {
                     foreach (Rect rect in rects)
                     {
-                        Console.WriteLine("face detected! "+ DateTime.Now);
+                        //Console.WriteLine("face detected! "+ DateTime.Now);
+                        
+                        Rect sizerect = rect;
+
+                        //int size_adder = 30;
+                        //sizerect.Left = rect.Left - size_adder;
+                        //sizerect.Left = sizerect.Left<0? 0: sizerect.Left;
+                        //sizerect.Top = rect.Top - size_adder;
+                        //sizerect.Top = sizerect.Top < 0 ? 0 : sizerect.Top;
+                        //sizerect.Size = new OpenCvSharp.Size(rect.Width + size_adder*2, rect.Height + size_adder * 2);
 
                         //얼굴 판독된 부분에 네모 칠하기
-                        frame.Rectangle(rect, Scalar.Green, 5);
+                        //frame.Rectangle(sizerect, Scalar.Green, 5);
 
                         //얼굴 판독된 부분이 이미지 덮어 씌우기
-                         insert_image = insert_image_origin;
-                         insert_image_gray = insert_image_origin_gray;
-                        
+                        insert_image = insert_image_origin;
+                        insert_image_gray = insert_image_origin_gray;
+
                         //두 이미지를 얼굴에 해당 하는 영역의 크기로 변환한다.
-                        insert_image_gray = insert_image_gray.Resize(rect.Size);
-                        insert_image = insert_image.Resize(rect.Size);
+                        insert_image = insert_image.Resize(sizerect.Size);
+                        insert_image_gray = insert_image_gray.Resize(sizerect.Size);
 
                         //카메라에 찍힌 화면인 frame 에서 이미지를 추가하기 위한 영역을 추출해 매트릭스화 한다.
-                         imageROI = new Mat(frame, rect);
-                        
+                        imageROI = new Mat(frame, sizerect);
+
                         //추출한 매트릭스에 이미지를 추가한다. 그레이 이미지가 왜 필요한지는 잘 모르겠다.
-                        insert_image.CopyTo(imageROI, insert_image_gray);
+                        //insert_image.CopyTo(imageROI, insert_image_gray);
+                        Mat mask = insert_image_gray;
+                        insert_image.CopyTo(imageROI, mask);
 
                     }
                 }
@@ -97,18 +106,19 @@ namespace WindowsFormsOpenCVApplication3
 
                 pictureBox1.Image = tempimage1;
 
-                imageROI.Release();
-                insert_image_gray.Release();
-                insert_image.Release();
+                //imageROI.Release();
+                //insert_image_gray.Release();
+                //insert_image.Release();
 
-                //Cv2.WaitKey(10);
-                System.GC.Collect(0, GCCollectionMode.Forced);
-                System.GC.WaitForFullGCComplete();
+                Cv2.WaitKey(10);
+                System.GC.Collect();
+                //System.GC.Collect(0, GCCollectionMode.Forced);
+                //System.GC.WaitForFullGCComplete();
             }
             catch (Exception extdf)
             {
-                //Console.WriteLine(extdf.ToString());
-                Form1_Load(null, null);
+                Console.WriteLine(extdf.ToString());
+                //Form1_Load(null, null);
             }
         }
     }

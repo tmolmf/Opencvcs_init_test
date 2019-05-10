@@ -34,75 +34,50 @@ namespace WindowsFormsOpenCVApplication1
             #region 로컬 파일 읽기
             //로컬 파일 읽기
             {
-                //frame = new Mat();
-                //cap = VideoCapture.FromCamera(CaptureDevice.Any, 0);
-
-                //var window = new Window("capture");
-
-                //// When the movie playback reaches end, Mat.data becomes NULL.
-                //while (true)
-                //{
-                //    try
-                //    {
-                //        Console.WriteLine("READ");
-                //        cap.Read(frame); // same as cvQueryFrame
-
-                //        window.ShowImage(frame);
-                //        Cv2.WaitKey();
-                //    }
-                //    catch (Exception extdf)
-                //    {
-                //        Console.WriteLine(extdf.ToString());
-                //    }
-                //}
-            }
-            #endregion
-
-            #region 카메라 영상 읽기
-            {
                 frame = new Mat();
-                for (int i = 0; i < 1; i++)
-                {
-                    cap = VideoCapture.FromCamera(CaptureDevice.Any, 0);
-                    Console.WriteLine(cap.IsOpened());
-                }
-                //cap = VideoCapture.FromFile("D:\\Downloads\\modet_2018-10-12_07-55.mkv");
+                cap = VideoCapture.FromFile("D:\\Downloads\\프리스틴.mp4");
+
 
                 //cap.FrameWidth = frameWidth;
                 //cap.FrameHeight = frameHeight;
                 //cap.Open(0);
-                //cap.Read(frame);
+                cap.Read(frame);
                 //pictureBoxIpl1.ImageIpl = frame;
 
                 //Console.WriteLine(cap.Fps);
                 //int sleepTime = (int)Math.Round(1000 / cap.Fps);
                 //Console.WriteLine(sleepTime);
-
-                window = new Window("capture");
-                //window2 = new Window("edge");
-                // Frame image buffer
+                var window = new Window("capture");
 
                 // When the movie playback reaches end, Mat.data becomes NULL.
-                //while (true)
+                while (true)
+                {
+                    try
+                    {
+                        Console.WriteLine("READ");
+                        cap.Read(frame); // same as cvQueryFrame
+
+                        window.ShowImage(frame);
+                        Cv2.WaitKey();
+                    }
+                    catch (Exception extdf)
+                    {
+                        Console.WriteLine(extdf.ToString());
+                    }
+                }
+            }
+            #endregion
+
+            #region 카메라 영상 읽기
+            {
+                //frame = new Mat();
+                //for (int i = 0; i < 1; i++)
                 //{
-                //    try
-                //    {
-                //        Console.WriteLine("READ");
-                //        cap.Read(frame); // same as cvQueryFrame
-
-                //        Mat dst = new Mat();
-                //        //Cv2.Canny(frame, dst, 10, 100);
-
-                //        window.ShowImage(frame);
-                //        //window2.ShowImage(dst);
-                //        Cv2.WaitKey();
-                //    }
-                //    catch (Exception extdf)
-                //    {
-                //        Console.WriteLine(extdf.ToString());
-                //    }
+                //    cap = VideoCapture.FromCamera(CaptureDevice.Any, 0);
+                //    Console.WriteLine(cap.IsOpened());
                 //}
-                //while (!cap.IsOpened());
+
+                //window = new Window("capture");
             }
             #endregion
         }
@@ -111,11 +86,11 @@ namespace WindowsFormsOpenCVApplication1
         {
             try
             {
-                Console.WriteLine("READ");
-                cap.Read(frame); // same as cvQueryFrame
+                //Console.WriteLine("READ");
+                //cap.Read(frame); // same as cvQueryFrame
                 
-                window.ShowImage(frame);
-                Cv2.WaitKey(10);
+                //window.ShowImage(frame);
+                //Cv2.WaitKey(10);
             }
             catch (Exception extdf)
             {
